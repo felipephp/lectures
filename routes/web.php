@@ -11,8 +11,27 @@
 |
 */
 
+//$admin = [
+//    'home' => new App\Http\Controllers\Controller()
+//];
+
+class admin {
+    public function home()
+    {
+        return new App\Http\Controllers\Controller();
+    }
+}
+
+$admin = new admin();
+
 $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->get('/home', 'Controller@firstFunc');
+$app->group(['prefix' => 'admin'], function () use ($app, $admin){
+
+    $app->get('/home', function () use ($admin){
+        return $admin->home()->index();
+    });
+
+});
